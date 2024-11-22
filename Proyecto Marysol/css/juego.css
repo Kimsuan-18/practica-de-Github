@@ -37,7 +37,6 @@ body{
     border-radius: 4px;
     box-shadow: 3px 3px var(--tokenShadow);
 }
-/*PANTALLA INICIAL*/
 .first-screen{
     text-align: center;
 }
@@ -49,7 +48,6 @@ body{
     width: 300px;
 }
 
-/*BOTONES*/
 .starBtn-container{
     position: relative;
     width: 280px;
@@ -78,7 +76,6 @@ body{
     z-index: -1;
 }
 
-/*COUNTER*/
 .counter-container{
     text-align: center;
     font-size: 40px;
@@ -87,7 +84,6 @@ body{
 .counter{
     display: none;
 }
-/*Texto game over*/
 .game-over{
     font-size: 48px;
     width: 300px;
@@ -96,4 +92,18 @@ body{
 }
 img{
     width: 100%;
+}
+.nav-enlace{
+    display: inline-block;
+    background: #63a865;
+    color: #fff;
+    padding: 20px 188px;
+    text-decoration: none;
+}
+.nav-enlace:hover{
+    background: #366838;
+}
+nav{
+    background: #d1f0bc;
+    padding: 10px;
 }
