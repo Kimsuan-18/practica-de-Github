@@ -1,0 +1,116 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #c5ecbd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  
+  .creative-menu {
+    position: relative;
+    text-align: center;
+  }
+  
+  .creative-menu .logo {
+    font-size: 32px;
+    color: #000000;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .creative-menu .menu-items {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .creative-menu .menu-items li {
+    position: relative;
+    display: inline-block;
+    margin: 0 10px;
+  }
+  
+  .creative-menu .menu-items li a {
+    text-decoration: none;
+    font-size: 18px;
+    color: #000000;
+    padding: 15px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #48a148;
+    width: 60px;
+    height: 60px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin: 0 25px;
+  }
+  
+  
+  .creative-menu .menu-items li a:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+    background-color: #60ff82;
+  }
+  
+  
+  .creative-menu .menu-items li a::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid #60ff82;
+    top: 0;
+    left: 0;
+    transform: scale(0.9);
+    opacity: 0;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  
+  .creative-menu .menu-items li a:hover::before {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+  
+  
+  .creative-menu .menu-items li a::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 200%;
+    height: 200%;
+    border-radius: 50%;
+    background: rgba(80, 252, 103, 0.2);
+    z-index: -1;
+    transition: transform 0.4s ease;
+  }
+  
+  .creative-menu .menu-items li a:hover::after {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  
+  
+  @media (max-width: 768px) {
+    .creative-menu .menu-items {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .creative-menu .menu-items li a {
+      width: 50px;
+      height: 50px;
+      font-size: 16px;
+    }
+  }

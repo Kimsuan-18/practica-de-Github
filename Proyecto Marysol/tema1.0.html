@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Ecosistemas</title>
+    <style>
+         .tema{
+            background-color:#d1f0bc;
+            padding: 10px;
+            margin: 50px;
+            font-size: 17px;
+            color: #366838;
+            text-align: center;
+            width: 94%;
+            font-family: 'Times New Roman', Times, serif;
+
+
+        }
+        body {
+            background-color: rgb(254, 255, 241);
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #000
+        }
+        .contenedor-pregunta {
+            border: 1px solid rgb(199, 241, 179);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #eeffee;
+            width: 100%;
+            max-width: 600px;
+        }
+        button {
+            border: none;
+            background-color: #000;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 20px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .correcta { background-color: #d4edda; }
+        .incorrecta { background-color: #f8d7da; }
+        .acierto { color: green; }
+        .no-acierto { color: red; }
+        .resultado {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        .opcion label{
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    
+    <div class="tema">
+        <h1>CADENA ALIMENTICIA</h1>
+    </div>
+    <p align="center"><h3>Contesta el siguiente cuestionario.</h3></p>
+
+    
+    <section id="juego"></section>
+
+    
+    <button id="corregir">Evaluar</button>
+
+    <script>
+        
+        const bd_juego = [
+            {
+                id: 0,
+                pregunta: "¿Qué es una cadena alimenticia?",
+                opciones: ["Es una secuencia de organizmos que se alimentan unos de otros.", "Es un proceso de intercmbio de nustrientes de organismos vivos y no vivos.", "Es un proceso quimico que ocurre en el cuerpo de los seres vivos."],
+                correcta: 0
+            },
+            {
+                id: 1,
+                pregunta: "¿Qué son las plantas y las algas?",
+                opciones: ["Descomponedores", "Consumidores primarios", "Productores"],
+                correcta: 2
+            },
+            {
+                id: 2,
+                pregunta: "¿Qué organismo es un consumidor en la cadena alimenticia?",
+                opciones: ["Plantas", "Herbívoros", "Bacterias"],
+                correcta: 1
+            },
+            {
+                id: 3,
+                pregunta: "¿Qué papel tienen los descomponedores en un ecosistema?",
+                opciones: ["Producen alimentos a través de la fotosíntesis.", "Descomponen materia orgánica para liberar nutrientes.", "Consumen otros animales."],
+                correcta: 1
+            },
+            {
+                id: 4,
+                pregunta: "¿Cuál es un ejemplo de cadena alimenticia de un desértico?",
+                opciones: ["Planta (productor) → Insecto (herbívoro) → Rana (carnívoro) → Serpiente (depredador).", " Cactus (productor) → Insecto (herbívoro) → Lagarto (carnívoro) → Halcón (depredador).", "Hierba (productor) → Conejo (herbívoro) → Zorro (carnívoro) → Oso (depredador)."],
+                correcta: 1
+            }
+        ];
+
+        let respuestas = [];
+        let cantiCorrectas = 0;
+
+    
+        function cargarPreguntas() {
+            const juego = document.getElementById('juego');
+            bd_juego.forEach((pregunta, index) => {
+                const contenedor = document.createElement('div');
+                contenedor.className = "contenedor-pregunta";
+                contenedor.id = `pregunta${pregunta.id}`;
+
+                const h2 = document.createElement('h2');
+                h2.textContent = `${index + 1} - ${pregunta.pregunta}`;
+                contenedor.appendChild(h2);
+
+                const opciones = document.createElement('div');
+                opciones.className = 'opciones';
+
+                pregunta.opciones.forEach((opcion, i) => {
+                    const label = document.createElement('label');
+                    label.id = `label${index}_${i}`;
+
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.name = `p${index}`;
+                    input.value = i;
+                    input.onclick = () => seleccionar(index, i);
+
+                    const span = document.createElement('span');
+                    span.textContent = opcion;
+
+                    label.appendChild(input);
+                    label.appendChild(span);
+                    opciones.appendChild(label);
+                });
+
+                contenedor.appendChild(opciones);
+                juego.appendChild(contenedor);
+            });
+        }
+
+        
+        function seleccionar(preguntaIndex, opElegida) {
+            respuestas[preguntaIndex] = opElegida;
+        }
+
+
+        document.getElementById('corregir').onclick = function() {
+            cantiCorrectas = 0;
+            bd_juego.forEach((pregunta, index) => {
+                const contenedor = document.getElementById(`pregunta${pregunta.id}`);
+                const correctAnswer = pregunta.correcta;
+                const selectedAnswer = respuestas[index];
+
+                
+                if (selectedAnswer === correctAnswer) {
+                    contenedor.classList.add('correcta');
+                    cantiCorrectas++;
+                } else {
+                    contenedor.classList.add('incorrecta');
+                }
+
+                
+                pregunta.opciones.forEach((_, i) => {
+                    const label = document.getElementById(`label${index}_${i}`);
+                    const input = label.querySelector('input');
+                    input.disabled = true;
+
+                    if (i === correctAnswer) {
+                        label.querySelector('span').classList.add('acierto');
+                    } else if (i === selectedAnswer) {
+                        label.querySelector('span').classList.add('no-acierto');
+                    }
+                });
+            });
+
+            
+            mostrarResultado();
+        };
+
+        
+        function mostrarResultado() {
+            const resultado = document.createElement('h2');
+            resultado.className = 'resultado';
+            resultado.textContent = `${cantiCorrectas} CORRECTAS - ${bd_juego.length - cantiCorrectas} INCORRECTAS`;
+            document.getElementById('juego').appendChild(resultado);
+            window.scrollTo(0, 0);
+        }
+
+        
+        cargarPreguntas();
+    </script>
+</body>
+</html>
