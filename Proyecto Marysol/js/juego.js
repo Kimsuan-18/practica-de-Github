@@ -11,7 +11,7 @@ let starBtnContainer = document.querySelector('.starBtn-container');
 let counterElement = document.querySelector('.counter')
 let counter = 60;
 let playerWin = false;
-
+let gameInfo = document.querySelector('.game-info');    
 // Animacion de botones
 startBtn.addEventListener('mousedown', ()=>{
     startBtn.style.top = '4px';
@@ -25,6 +25,7 @@ startBtn.addEventListener('click', ()=>{
     starBtnContainer.style.display = 'none';
     firstScreen.style.display = 'none';
     counterElement.style.display = 'block';
+   gameInfo.style.display = 'none';
     matrix = shuffleMatrix()
    //  let matrix = [
  // [ '1.jpg', '2.jpg', '3.jpg',],
@@ -76,6 +77,8 @@ function drawTokens(){
               playerWin = true;
               starBtnContainer.style.display = 'block';
               startBtn.innerText = "Jugar de nuevo";
+              gameInfo.style.display = 'block'; // Mostrar el mensaje de victoria
+              gameInfo.innerHTML = "Esta imagen nos habla sobre la luz y la fotosintesis";
       
               confetti({
                 particleCount: 150,
