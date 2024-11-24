@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorama con Confeti</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #4bec94;
+        }
+
+        .cronometro {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .memorama {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            gap: 10px;
+        }
+
+        .carta {
+            width: 100px;
+            height: 100px;
+            background-color: #0e8f13;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: transform 0.3s;
+            transform-style: preserve-3d;
+        }
+
+        .carta.volteada {
+            background-color: #fff;
+            color: #333;
+        }
+
+        #confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .info-cadena {
+            display: none;
+            background-color: #fff;
+            color: #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            width: 80%;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-cadena h2 {
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table, th, td {
+            border: 1px solid #333;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4bec94;
+        }
+
+        .mensaje-final {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: red;
+        }
+        .nav-enlace{
+    display: inline-block;
+    background: #63a865;
+    color: #fff;
+    padding: 20px 160px;
+    text-decoration: none;
+}
+.nav-enlace:hover{
+    background: #366838;
+}
+navegación{
+    background: #d1f0bc;
+    padding: 10px;
+}
+    </style>
+<nav>
+        <a href="MENUs.html" class="nav-enlace">MENU</a>
+        <a href="tema1.0.html" class="nav-enlace">QUIZ</a>
+        <a href="ejemplo.html" class="nav-enlace">PÁGINA INFO</a>
+</nav>
+    </style>
+</head>
+<body>
+    <h1>MEMORAMA</h1>
+    <div class="cronometro" id="cronometro">Tiempo restante: 60 s</div>
+    <div class="memorama" id="memorama"></div>
+    <div class="info-cadena" id="infoCadena">
+        <h2>Información sobre la Cadena Trófica</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Animal</th>
+                    <th>Función en la Cadena Trófica</th>
+                </tr>
+            </thead>
+            <tbody id="tablaInformacion">
+                <!-- Aquí se llenará dinámicamente la tabla -->
+            </tbody>
+        </table>
+    </div>
+    <div class="mensaje-final" id="mensajeFinal"></div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        const animalesFunciones = [
+            { icono: '🐶', funcion: 'Consumidor secundario: Participa en la cadena trófica como depredador de pequeños herbívoros.' },
+            { icono: '🐱', funcion: 'Consumidor secundario: Depredador eficiente de pequeños mamíferos.' },
+            { icono: '🐰', funcion: 'Consumidor primario: Se alimenta de plantas.' },
+            { icono: '🐼', funcion: 'Consumidor primario: Se especializa en el consumo de bambú.' },
+            { icono: '🦁', funcion: 'Consumidor terciario: Regula las poblaciones de grandes herbívoros.' },
+            { icono: '🐮', funcion: 'Consumidor primario: Se alimenta de hierba.' },
+            { icono: '🐸', funcion: 'Consumidor secundario: Se alimenta de insectos.' },
+            { icono: '🐵', funcion: 'Consumidor primario y omnívoro: Facilita la dispersión de semillas.' }
+        ];
+
+        let cartas = [...animalesFunciones, ...animalesFunciones].sort(() => 0.5 - Math.random());
+        const memorama = document.getElementById('memorama');
+        const cronometro = document.getElementById('cronometro');
+        const infoCadena = document.getElementById('infoCadena');
+        const tablaInformacion = document.getElementById('tablaInformacion');
+        const mensajeFinal = document.getElementById('mensajeFinal');
+        let cartaVolteada = null;
+        let bloqueado = false;
+        let tiempoRestante = 60;
+        let intervalo;
+
+        function iniciarCuentaRegresiva() {
+            intervalo = setInterval(() => {
+                tiempoRestante--;
+                cronometro.textContent = `Tiempo restante: ${tiempoRestante} s`;
+
+                if (tiempoRestante === 0) {
+                    clearInterval(intervalo);
+                    mostrarMensajeFinal("¡Tiempo agotado! Intenta nuevamente.");
+                    bloquearJuego();
+                }
+            }, 1000);
+        }
+
+        function mostrarMensajeFinal(mensaje) {
+            mensajeFinal.textContent = mensaje;
+        }
+
+        function bloquearJuego() {
+            document.querySelectorAll('.carta').forEach(carta => {
+                carta.removeEventListener('click', voltearCarta);
+            });
+        }
+
+        function crearCarta(animal) {
+            const carta = document.createElement('div');
+            carta.classList.add('carta');
+            carta.dataset.icono = animal.icono;
+            carta.addEventListener('click', voltearCarta);
+            memorama.appendChild(carta);
+        }
+
+        function voltearCarta() {
+            if (bloqueado || this.classList.contains('volteada')) return;
+
+            this.classList.add('volteada');
+            this.textContent = this.dataset.icono;
+
+            if (!cartaVolteada) {
+                cartaVolteada = this;
+            } else {
+                if (cartaVolteada.dataset.icono === this.dataset.icono) {
+                    cartaVolteada.removeEventListener('click', voltearCarta);
+                    this.removeEventListener('click', voltearCarta);
+                    cartaVolteada = null;
+
+                    if (document.querySelectorAll('.carta:not(.volteada)').length === 0) {
+                        clearInterval(intervalo);
+                        mostrarResultado();
+                    }
+                } else {
+                    bloqueado = true;
+                    setTimeout(() => {
+                        cartaVolteada.classList.remove('volteada');
+                        cartaVolteada.textContent = '';
+                        this.classList.remove('volteada');
+                        this.textContent = '';
+                        cartaVolteada = null;
+                        bloqueado = false;
+                    }, 1000);
+                }
+            }
+        }
+
+        function mostrarResultado() {
+            lanzarConfetti();
+            llenarTabla();
+            infoCadena.style.display = 'block';
+        }
+
+        function llenarTabla() {
+            animalesFunciones.forEach(animal => {
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${animal.icono}</td>
+                    <td>${animal.funcion}</td>
+                `;
+                tablaInformacion.appendChild(fila);
+            });
+        }
+
+        function lanzarConfetti() {
+            confetti({
+                particleCount: 500,
+                spread: 90,
+                origin: { y: 0.6 },
+                colors: ['#ff0', '#ff6347', '#32cd32', '#00f', '#8a2be2', '#ff1493']
+            });
+        }
+
+        cartas.forEach(crearCarta);
+        iniciarCuentaRegresiva();
+    </script>
+</body>
+</html>
