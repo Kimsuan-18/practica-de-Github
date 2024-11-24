@@ -78,7 +78,7 @@ function drawTokens(){
               starBtnContainer.style.display = 'block';
               startBtn.innerText = "Jugar de nuevo";
               gameInfo.style.display = 'block'; // Mostrar el mensaje de victoria
-              gameInfo.innerHTML = "Esta imagen nos habla sobre la luz y la fotosintesis";
+              gameInfo.innerHTML = "La fotosíntesis es un proceso químico mediante el cual las plantas convierten la materia inorgánica (dióxido de carbono, agua) en materia orgánica (azúcares, carbohidratos y oxígeno) a partir de la luz solar.";
       
               confetti({
                 particleCount: 150,
