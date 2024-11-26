@@ -78,8 +78,7 @@ function drawTokens(){
               starBtnContainer.style.display = 'block';
               startBtn.innerText = "Jugar de nuevo";
               gameInfo.style.display = 'block'; // Mostrar el mensaje de victoria
-              gameInfo.innerHTML = "La fotosíntesis es un proceso químico mediante el cual las plantas convierten la materia inorgánica (dióxido de carbono, agua) en materia orgánica (azúcares, carbohidratos y oxígeno) a partir de la luz solar.Esta materia orgánica es indispensable para la vida en la Tierra: los azúcares (o glucosa) son el alimento de las plantas; el oxígeno permite la respiración de los seres vivos, mientras que los carbohidratos sirven de nutrientes a los animales herbívoros.La intensidad de la luz: A medida que se incrementa la intensidad de la luz, se incrementa también la velocidad del proceso de fotosíntesis. Sin embargo, esto solo ocurre hasta que se alcanzan los 600 watts de intensidad de luz; a niveles más altos la velocidad de la fotosíntesis permanece igual.";
-      
+              gameInfo.innerHTML = "<center>La fotosíntesis es un proceso químico mediante el cual las plantas convierten la materia inorgánica (dióxido de carbono, agua) en materia orgánica <br>(azúcares, carbohidratos y oxígeno) a partir de la luz solar.Esta materia orgánica es indispensable para la vida en la Tierra:<br> Los azúcares (o glucosa) son el alimento de las plantas; el oxígeno permite la respiración de los seres vivos,<br> mientras que los carbohidratos sirven de nutrientes a los animales herbívoros.La intensidad de la luz:<br> A medida que se incrementa la intensidad de la luz, se incrementa también la velocidad del proceso de fotosíntesis.<br> Sin embargo, esto solo ocurre hasta que se alcanzan los 600 watts de intensidad de luz;<br> a niveles más altos la velocidad de la fotosíntesis permanece igual.</center>";
               confetti({
                 particleCount: 150,
                 spread: 180
